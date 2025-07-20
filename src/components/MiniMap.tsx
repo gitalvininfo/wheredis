@@ -1,6 +1,6 @@
 'use client';
 
-import { useMinimap } from '@/hooks/useMiniMap';
+import { useMinimap } from '@/hooks/useMinimap';
 
 const MiniMap = () => {
   const { mapRef } = useMinimap();

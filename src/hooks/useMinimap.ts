@@ -1,6 +1,7 @@
 import { calculateScore } from '@/utils/game-utils';
 import { useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
+import { useGameStore } from '@/store/gameStore';
 
 function initMap(
   mapRef: React.RefObject<HTMLDivElement | null>,
@@ -42,10 +43,7 @@ function attachMapClickHandler(
       correctLocation
     );
 
-    console.log(`Distance: ${distanceInMeters} meters`);
-
-    const score = calculateScore(distanceInMeters);
-    console.log(`Score: ${score}`);
+    updateScoreInStore(distanceInMeters);
 
     const guessPath = new google.maps.Polyline({
       path: [userGuessLatLng, correctLocation],
@@ -57,6 +55,13 @@ function attachMapClickHandler(
 
     guessPath.setMap(map);
   });
+}
+
+function updateScoreInStore(distanceInMeters: number): void {
+  console.log(`Distance: ${distanceInMeters} meters`);
+
+  const score = calculateScore(distanceInMeters);
+  useGameStore.getState().setScore(score);
 }
 
 export const useMinimap = () => {

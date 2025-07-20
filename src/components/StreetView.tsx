@@ -1,9 +1,9 @@
 import { useGameStart } from '@/hooks/useGameStart';
-import React from 'react';
 
 function StreetView() {
   const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   useGameStart();
+
   return (
     <div className="h-screen w-full">
       <iframe
