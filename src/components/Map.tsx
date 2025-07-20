@@ -68,7 +68,12 @@ const Map = () => {
     });
   }, []);
 
-  return <div ref={mapRef} style={{ height: '500px', width: '100%' }} />;
+  return (
+    <div
+      ref={mapRef}
+      className="absolute right-0 bottom-0 h-[300px] w-[20%]"
+    ></div>
+  );
 };
 
 export default Map;
