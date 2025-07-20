@@ -16,6 +16,7 @@ export const useGameStart = () => {
   useEffect(() => {
     if (!isFetching && data) {
       initializeGame(data);
+      useGameStore.getState().setNextCoordinates();
     }
   }, [isFetching, data, initializeGame]);
 

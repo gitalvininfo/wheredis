@@ -5,13 +5,24 @@ import { create } from 'zustand';
 export const useGameStore = create<GameState & GameActions>((set, get) => ({
   // properties
   coordinates: [],
-  currentCoordinate: null,
+  currentCoordinates: null,
+  currentCoordinateIndex: 0,
   isGameOver: false,
   score: 0,
 
   // actions
   initializeGame: (coordinates) => set({ coordinates }),
-  setActiveLocation: (coordinate) => set({ currentCoordinate: coordinate }),
+  setNextCoordinates: () => {
+    const coordinates = get().coordinates;
+    const index = get().currentCoordinateIndex;
+    const coordinate = coordinates[index];
+
+    set({
+      currentCoordinateIndex: get().currentCoordinateIndex + 1,
+      currentCoordinates: coordinate,
+    });
+  },
+
   markGameAsOver: (isGameOver) => set({ isGameOver }),
   setScore: (score) => {
     const { score: currentScore } = get();

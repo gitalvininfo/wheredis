@@ -2,7 +2,8 @@ import { Coordinates } from './coordinates';
 
 export interface GameState {
   coordinates: Coordinates[];
-  currentCoordinate: Coordinates | null;
+  currentCoordinates: Coordinates | null;
+  currentCoordinateIndex: number;
   isGameOver: boolean;
   score: number;
 }

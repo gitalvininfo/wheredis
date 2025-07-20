@@ -3,11 +3,12 @@ import { useCallback, useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import { useGameStore } from '@/store/gameStore';
 
-const NEXT_ROUND_DELAY = 1000;
+const NEXT_ROUND_DELAY = 10000;
 
 export const useMinimap = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const score = useGameStore((state) => state.score);
+  const currentCoordinates = useGameStore((state) => state.currentCoordinates);
 
   const updateScoreInStore = useCallback((distanceInMeters: number): void => {
     console.log(`Distance: ${distanceInMeters} meters`);
@@ -32,28 +33,33 @@ export const useMinimap = () => {
           map,
         });
 
-        const userGuessLatLng = new google.maps.LatLng(userClickLocation);
-        const correctLocation = new google.maps.LatLng(10.2926, 123.9022);
+        if (currentCoordinates) {
+          const userGuessLatLng = new google.maps.LatLng(userClickLocation);
+          const correctLocation = new google.maps.LatLng(
+            currentCoordinates[0],
+            currentCoordinates[1]
+          );
 
-        const distanceInMeters = spherical.computeDistanceBetween(
-          userGuessLatLng,
-          correctLocation
-        );
+          const distanceInMeters = spherical.computeDistanceBetween(
+            userGuessLatLng,
+            correctLocation
+          );
 
-        updateScoreInStore(distanceInMeters);
+          updateScoreInStore(distanceInMeters);
 
-        const guessPath = new google.maps.Polyline({
-          path: [userGuessLatLng, correctLocation],
-          geodesic: true,
-          strokeColor: '#FF0000',
-          strokeOpacity: 1.0,
-          strokeWeight: 2,
-        });
+          const guessPath = new google.maps.Polyline({
+            path: [userGuessLatLng, correctLocation],
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+          });
 
-        guessPath.setMap(map);
+          guessPath.setMap(map);
+        }
       });
     },
-    [updateScoreInStore]
+    [updateScoreInStore, currentCoordinates]
   );
 
   const initMap = useCallback(
@@ -78,6 +84,8 @@ export const useMinimap = () => {
 
   const showNextLocation = useCallback(() => {
     console.log('start next round');
+
+    useGameStore.getState().setNextCoordinates();
   }, []);
 
   useEffect(() => {
