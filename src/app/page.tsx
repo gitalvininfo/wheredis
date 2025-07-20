@@ -1,11 +1,5 @@
-import Map from '@/components/Map';
-import StreetView from '@/components/StreetView';
+import StartPage from './start/page';
 
-export default function Home() {
-  return (
-    <div className="relative">
-      <Map />
-      <StreetView />
-    </div>
-  );
+export default function Index() {
+  return <StartPage />;
 }

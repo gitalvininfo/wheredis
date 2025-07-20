@@ -2,8 +2,15 @@
 
 import { useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
+import { useGameStore } from '@/store/gameStore';
 
-const Map = () => {
+const MiniMap = () => {
+  const coordinates = useGameStore((s) => s.coordinates);
+
+  useEffect(() => {
+    console.log('coordinates', coordinates);
+  }, [coordinates]);
+
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -76,4 +83,4 @@ const Map = () => {
   );
 };
 
-export default Map;
+export default MiniMap;
